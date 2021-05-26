@@ -1,30 +1,28 @@
-var path = require('path');
-var UglifyJSPlugin = require('uglifyjs-webpack-plugin');
+const HtmlWebpackPlugin = require("html-webpack-plugin");
+const path = require("path");
 
 module.exports = {
-  entry: ['./src/App.js'],
+  entry: ["./src/App.js"],
   output: {
-    filename: 'bundle.min.js',
-    path: path.resolve(__dirname, 'dist')
+    filename: "bundle.min.js",
+    path: path.resolve(__dirname, "dist"),
   },
-	devtool: "cheap-eval-source-map",
-	devServer: {
-		port: 9000,
-		contentBase: path.join(__dirname, "dist")
-	},
-	module: {
-	  rules: [
-	    {
-	      test: /\.js$/,
-	      exclude: /(node_modules)/,
-	      loader: 'babel-loader',
-	      query: {
-	        presets: ['es2015']
-	      }
-	    }
-	  ]
-	},
-	plugins: [
-    new UglifyJSPlugin()
-  ]
+  module: {
+    rules: [
+      {
+        test: /\.scss$/,
+        use: ["style-loader", "css-loader", "sass-loader"],
+      },
+      {
+        test: /\.js$/,
+        exclude: /node_modules/,
+        use: ["babel-loader"],
+      },
+    ],
+  },
+  plugins: [
+    new HtmlWebpackPlugin({
+      template: path.resolve(__dirname, "src", "index.html"),
+    }),
+  ],
 };
